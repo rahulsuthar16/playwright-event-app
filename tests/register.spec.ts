@@ -6,7 +6,7 @@ import credentials from '../data/credentials.json'
 let registerPage: RegisterPage
 const existingUser = credentials.valid
 
-test.describe("registration scenarios", { tag: ["@register"] }, () => {
+test.describe("register scenarios", { tag: ["@register"] }, () => {
     test.beforeEach(async ({ page }) => {
         registerPage = new RegisterPage(page)
         await registerPage.goto()
