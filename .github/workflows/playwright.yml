@@ -10,12 +10,6 @@ jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        shardIndex: [1, 2, 3] # Adjust number of parallel runners here (e.g., 3 shards)
-        shardTotal: [3]
-
     steps:
     - uses: actions/checkout@v4
 
@@ -31,56 +25,23 @@ jobs:
       run: npx playwright install --with-deps
 
     - name: Run Playwright tests
-      run: npx playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
+      run: npx playwright test
       env:
         CI: true
 
-    - name: Upload Blob Report Fragment
+    - name: Upload HTML Report Artifact
       if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: blob-report-${{ matrix.shardIndex }}
-        path: blob-report
-        retention-days: 1
-
-  merge-reports:
-    if: always()
-    needs: [test]
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-
-    - uses: actions/setup-node@v4
-      with:
-        node-version: lts/*
-        cache: 'npm'
-
-    - name: Install dependencies
-      run: npm ci
-
-    - name: Download All Blob Reports
-      uses: actions/download-artifact@v4
-      with:
-        path: all-blob-reports
-        pattern: blob-report-*
-        merge-multiple: true
-
-    - name: Merge into Single HTML Report
-      run: npx playwright merge-reports --reporter html ./all-blob-reports
-
-    - name: Publish Unified HTML Report
       uses: actions/upload-artifact@v4
       with:
         name: playwright-html-report
         path: playwright-report/
         retention-days: 30
 
-    # --- NEW: PUBLISH TO GITHUB PAGES ---
     - name: Deploy Report to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
       if: always()
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./playwright-report
-        destination_dir: report-${{ github.run_id }} # Organizes reports by run ID so history isn't overwritten immediately
+        destination_dir: report-${{ github.run_id }}
         keep_files: true
