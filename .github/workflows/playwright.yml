@@ -29,7 +29,6 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
-    # Cache Playwright browser binaries to skip unnecessary downloads
     - name: Get Playwright version
       id: playwright-version
       run: echo "VERSION=$(node -e "console.log(require('./package-lock.json').packages['node_modules/@playwright/test'].version)")" >> $GITHUB_ENV
@@ -58,7 +57,7 @@ jobs:
       env:
         CI: true
 
-    - name: Upload HTML Report Artifact
+    - name: Upload Playwright HTML Report Artifact
       if: always()
       uses: actions/upload-artifact@v4
       with:
@@ -66,25 +65,70 @@ jobs:
         path: playwright-report/
         retention-days: 30
 
-  # --- STAGE 2: Publish Report to GitHub Pages (No 404) ---
+    - name: Upload Allure Results Artifact
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: allure-results
+        path: allure-results/
+        retention-days: 30
+
+  # --- STAGE 2: Generate Allure Report with History & Publish ---
   publish-report:
     needs: test
     if: always()
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
     - uses: actions/checkout@v4
 
-    - name: Download HTML Report Artifact
+    # 1. Checkout the gh-pages branch to retrieve past history (if it exists)
+    - name: Checkout gh-pages branch
+      uses: actions/checkout@v4
+      if: always()
+      continue-on-error: true
+      with:
+        ref: gh-pages
+        path: gh-pages-dir
+
+    - name: Download Allure Results
+      uses: actions/download-artifact@v4
+      with:
+        name: allure-results
+        path: allure-results
+
+    - name: Download Playwright HTML Report
       uses: actions/download-artifact@v4
       with:
         name: playwright-html-report
-        path: playwright-report/
+        path: playwright-report/playwright-html
+
+    # 2. Generate Allure Report and include history from the previous run
+    - name: Generate Allure Report
+      uses: simple-elf/allure-report-action@master
+      if: always()
+      id: allure-report
+      with:
+        allure_results: allure-results
+        gh_pages: gh-pages-dir
+        allure_report: allure-report
+        allure_history: allure-history
+        keep_reports: 20
+
+    - name: Merge reports for GitHub Pages
+      if: always()
+      run: |
+        mkdir -p public
+        # Copy Allure report (which now contains history) to root of public folder
+        cp -r allure-report/* public/
+        # Put native Playwright report in a subfolder
+        mkdir -p public/playwright-html
+        cp -r playwright-report/playwright-html/* public/playwright-html/
 
     - name: Deploy Report to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./playwright-report
-        # Removing destination_dir places index.html at the root
-        # keep_files: false overwrites the old report so the link is always fresh
+        publish_dir: ./public
         keep_files: false
