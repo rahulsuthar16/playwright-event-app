@@ -1,0 +1,57 @@
+{
+    "conferenceEvent": {
+        "title": "Global AI & Cloud Summit 2026",
+        "description": "Explore the latest breakthroughs in cloud architecture and artificial intelligence.",
+        "category": "Conference",
+        "city": "Bangalore",
+        "venue": "Pragati Maidan Exhibition Center",
+        "dateTime": "2026-11-15T09:00",
+        "price": "199.99",
+        "totalSeats": "1200",
+        "imageUrl": "https://images.unsplash.com/photo-1540575467063-178a50c2df87"
+    },
+    "concertEvent": {
+        "title": "Acoustic Sunset Live in Concert",
+        "description": "An intimate evening of indie folk music under the open night sky.",
+        "category": "Concert",
+        "city": "Mumbai",
+        "venue": "Jio World Garden, BKC",
+        "dateTime": "2026-10-25T18:30",
+        "price": "45.50",
+        "totalSeats": "3000",
+        "imageUrl": "https://images.unsplash.com/photo-1492684223066-81342ee5ff30"
+    },
+    "sportsEvent": {
+        "title": "Inter-City Premier T20 Cricket Championship",
+        "description": "Catch the ultimate finale clash between top regional cricket titans.",
+        "category": "Sports",
+        "city": "Hyderabad",
+        "venue": "Rajiv Gandhi International Cricket Stadium",
+        "dateTime": "2026-11-05T15:00",
+        "price": "25.00",
+        "totalSeats": "25000",
+        "imageUrl": "https://images.unsplash.com/photo-1540747913346-19e32dc3e97e"
+    },
+    "workshopEvent": {
+        "title": "Mastering Full-Stack Playwright Automation",
+        "description": "A hands-on coding workshop on building scalable test frameworks from scratch.",
+        "category": "Workshop",
+        "city": "Pune",
+        "venue": "WeWork Futura, Magarpatta City",
+        "dateTime": "2026-11-10T10:00",
+        "price": "75.00",
+        "totalSeats": "50",
+        "imageUrl": "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4"
+    },
+    "festivalEvent": {
+        "title": "Dilli Diwali & Cultural Heritage Mela",
+        "description": "Celebrate the festival of lights with food stalls, live dance, and fireworks.",
+        "category": "Festival",
+        "city": "Delhi",
+        "venue": "Dilli Haat, INA Market",
+        "dateTime": "2026-10-20T16:00",
+        "price": "10.00",
+        "totalSeats": "10000",
+        "imageUrl": "https://images.unsplash.com/photo-1514525253161-7a46d19cd819"
+    }
+}

@@ -1,7 +1,8 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
+import { valid } from '../data/credentials.json';
 import { DashboardPage } from '../pages/dashboard.page';
 import { LoginPage } from '../pages/login.page';
-import { valid } from '../data/credentials.json'
+
 
 test.describe('Footer scenarios', { tag: ['@footer'] }, () => {
     let dashboard: DashboardPage;
@@ -9,7 +10,7 @@ test.describe('Footer scenarios', { tag: ['@footer'] }, () => {
     // Navigate to the page once before each test in this block
     test.beforeEach(async ({ page }) => {
         const loginPage = new LoginPage(page)
-        loginPage.goto()
+        await loginPage.goto()
         await loginPage.login(valid.email, valid.password)
         await expect(page).toHaveURL("/")
         dashboard = new DashboardPage(page);

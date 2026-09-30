@@ -1,7 +1,7 @@
 import { expect, Locator, Page } from "@playwright/test";
 
-export type HeaderLink = 'Home' | 'Events' | 'My Bookings' | 'API Docs';
-export type HeaderDropdown = 'Account';
+export type HeaderLink = 'Home' | 'Events' | 'My Bookings' | 'API Docs' | 'Admin';
+export type HeaderDropdownOption = 'Manage Events' | 'Manage Bookings';
 
 export class HeaderComponent {
     readonly page: Page
@@ -9,17 +9,21 @@ export class HeaderComponent {
 
     // Dedicated explicit locators for static elements
     readonly logo: Locator;
-    readonly title: Locator;
+    readonly eventHubTitle: Locator;
     readonly userText: Locator;
+    readonly adminDropdown: Locator
+    readonly dropdownOptions: Locator
     readonly logoutButton: Locator;
 
     constructor(page: Page) {
         this.page = page
         this.container = page.locator('body nav')
         this.logo = this.container.locator('.w-8.h-8.bg-indigo-600.rounded-lg')
-        this.title = this.container.getByText('EventHub', { exact: true })
+        this.eventHubTitle = this.container.getByText('EventHub', { exact: true })
         this.userText = this.container.getByTestId('user-email-display')
         this.logoutButton = this.container.getByTestId('logout-btn')
+        this.adminDropdown = this.container.getByRole('button', { name: 'Admin' })
+        this.dropdownOptions = this.container.locator(`.border-gray-100.rounded-xl a`)
     }
 
     // ==========================================
@@ -51,15 +55,14 @@ export class HeaderComponent {
     /**
      * Interact with dropdown menus in the header with type-safe options
      */
-    async selectDropdownOption(dropdownName: HeaderDropdown, optionText: string) {
-        const dropdownTrigger = this.container.locator('button, [role="button"]').filter({ hasText: dropdownName });
-        await expect(dropdownTrigger).toBeVisible();
+    async selectDropdownOption(optionText: HeaderDropdownOption) {
+        await expect(this.adminDropdown).toBeVisible();
 
         // Open dropdown (hover or click depending on your UI)
-        await dropdownTrigger.click();
+        await this.adminDropdown.click();
 
         // Locate and click the nested option
-        const optionLocator = this.page.locator(`[role="menuitem"], .dropdown-menu`).filter({ hasText: optionText });
+        const optionLocator = this.dropdownOptions.filter({ hasText: optionText });
         await expect(optionLocator).toBeVisible();
         await optionLocator.click();
     }
@@ -69,11 +72,19 @@ export class HeaderComponent {
     // ==========================================
     async verifyLogoAndTitle(expectedTitle: string) {
         await expect(this.logo).toBeVisible();
-        await expect(this.title).toHaveText(expectedTitle);
+        await expect(this.eventHubTitle).toHaveText(expectedTitle);
     }
 
     async verifyUserText(expectedUsername: string) {
         await expect(this.userText).toContainText(expectedUsername);
+    }
+
+    async verifyActiveLink(linkName: HeaderLink) {
+        const element = linkName === 'Admin' ? 'button' : 'a'
+        const linkLocator = this.container.locator(element).filter({ hasText: linkName });
+        await expect(linkLocator).toBeVisible();
+        //await expect(linkLocator).toHaveClass('text-indigo-600')
+        await expect(linkLocator).toHaveClass(/text-indigo-600.*bg-indigo-50/)
     }
 
     async clickLogout() {

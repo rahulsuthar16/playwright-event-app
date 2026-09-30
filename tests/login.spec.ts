@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test'
 import { LoginPage } from '../pages/login.page'
 import credentials from '../data/credentials.json'
+import { DashboardPage } from '../pages/dashboard.page'
 
 let loginPage: LoginPage
 const validUser = credentials.valid
@@ -14,8 +15,10 @@ test.beforeEach(async ({ page }) => {
 test.describe("login scenarios", { tag: ['@login'] }, () => {
 
     test("LOGIN_01 : User can login successfully with valid credentials", async ({ page }) => {
+        const dashboard = new DashboardPage(page)
         await loginPage.login(validUser.email, validUser.password)
         await expect(page).toHaveURL("/");
+        await expect(dashboard.browseEventsButton).toBeVisible()
     })
 
     test("LOGIN_02 : Login fails with invalid password", async ({ page }) => {
