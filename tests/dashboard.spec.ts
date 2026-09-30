@@ -33,10 +33,11 @@ test.describe('Featured Events scenarios', { tag: ['@featuredEvents'] }, () => {
 
     });
 
-    test('FEATURED_EVENTS_02 : should render featured events section with top 3 events', async () => {
+    test('FEATURED_EVENTS_02 : should render featured events section with top 3 events', async ({ page }) => {
         await expect(dashboard.featuredEventsTitle).toBeVisible()
         await expect(dashboard.featuredEventsSubTitle).toBeVisible()
         await expect(dashboard.viewAllLink).toBeVisible()
+        await page.waitForLoadState('networkidle')
         await dashboard.eventList.verifyCardCount(3)
     });
 

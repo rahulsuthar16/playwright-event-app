@@ -12,7 +12,7 @@ test.describe('Manage Bookings scenarios', { tag: ['@adminBookings'] }, () => {
         await adminBookingsPage.header.verifyActiveLink('Admin')
     });
 
-    test('MANAGE_BOOKINGS_01 : should display my bookings', async ({ page }) => {
+    test('MANAGE_BOOKINGS_01 : should display my bookings', async () => {
         await expect(adminBookingsPage.manageBookingsTitle).toBeVisible();
         await expect(adminBookingsPage.manageBookingsSubTitle).toBeVisible();
 

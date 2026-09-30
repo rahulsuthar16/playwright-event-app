@@ -18,7 +18,7 @@ test.describe('Header scenarios', { tag: ['@header'] }, () => {
 
     test('HEADER_01 : should render EventHub brand logo and redirect to home', async ({ page }) => {
         // Already covered by beforeEach, but you can add explicit static assertions here if needed
-        dashboard.header.verifyLogoAndTitle("EventHub")
+        await dashboard.header.verifyLogoAndTitle("EventHub")
         await expect(page).toHaveURL("/")
 
         // click on events link

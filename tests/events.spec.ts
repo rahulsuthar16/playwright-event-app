@@ -20,7 +20,8 @@ test.describe('Events scenarios', { tag: ['@eventsPage'] }, () => {
         await expect(eventsPage.categoryDropdown).toBeVisible();
         await expect(eventsPage.cityDropdown).toBeVisible();
         await expect(eventsPage.addNewEventButton).toBeVisible();
-        await expect(await eventsPage.eventList.cardsLocator.count()).toBeGreaterThan(1)
+        await page.waitForLoadState('networkidle')
+        expect(await eventsPage.eventList.cardsLocator.count()).toBeGreaterThan(1)
 
     });
 
@@ -84,7 +85,7 @@ test.describe('Events scenarios', { tag: ['@eventsPage'] }, () => {
         await eventsPage.verifyNoEventsFound()
     });
 
-    test('EVENTS_07 : should display the clear filter option when active filters are applied', async ({ page }) => {
+    test('EVENTS_07 : should display the clear filter option when active filters are applied', async () => {
         // no filter is applied
         await expect(eventsPage.clearFilter).not.toBeVisible()
 

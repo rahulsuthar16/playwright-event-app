@@ -15,7 +15,7 @@ test.describe('Manage Bookings scenarios', { tag: ['@adminBookings'] }, () => {
         await adminEventsPage.header.verifyActiveLink('Admin')
     });
 
-    test('MANAGE_EVENTS_01 : should display add new event form', async ({ page }) => {
+    test('MANAGE_EVENTS_01 : should display add new event form', async () => {
         await expect(adminEventsPage.formTitle).toBeVisible();
         await expect(adminEventsPage.formInfoAlert).toBeVisible();
     });

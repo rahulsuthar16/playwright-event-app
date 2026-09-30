@@ -35,7 +35,7 @@ test.describe("login scenarios", { tag: ['@login'] }, () => {
         await expect(page).toHaveURL(/login/);
     })
 
-    test("LOGIN_04 : Login enforces empty field validation", async ({ page }) => {
+    test("LOGIN_04 : Login enforces empty field validation", async () => {
         await loginPage.login("", "")
         await expect(loginPage.emailInputError).toBeVisible()
         await expect(loginPage.passwordInputError).toBeVisible()
@@ -55,7 +55,7 @@ test.describe("login scenarios", { tag: ['@login'] }, () => {
         await expect(page).toHaveURL(/register/);
     })
 
-    test("LOGIN_07 : user can navigate to API documentation", { tag: '@swagger-doc' }, async ({ page, context }) => {
+    test("LOGIN_07 : user can navigate to API documentation", { tag: '@swagger-doc' }, async ({ context }) => {
         const [apiDocsPage] = await Promise.all([
             context.waitForEvent('page'),
             loginPage.apiDocumentationLink.click()

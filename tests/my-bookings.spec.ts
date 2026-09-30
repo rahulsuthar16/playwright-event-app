@@ -12,7 +12,7 @@ test.describe('My Bookings scenarios', { tag: ['@bookingPage'] }, () => {
         await myBookingsPage.header.verifyActiveLink('My Bookings')
     });
 
-    test('MY_BOOKINGS_01 : should display my bookings', async ({ page }) => {
+    test('MY_BOOKINGS_01 : should display my bookings', async () => {
         await expect(myBookingsPage.myBookingsTitle).toBeVisible();
         await expect(myBookingsPage.myBookingsSubTitle).toBeVisible();
 
@@ -31,6 +31,5 @@ test.describe('My Bookings scenarios', { tag: ['@bookingPage'] }, () => {
 
         await expect(page).toHaveURL("/events")
     });
-
 
 });
