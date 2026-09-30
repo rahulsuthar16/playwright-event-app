@@ -12,7 +12,7 @@ export class EventTableComponent {
 
     constructor(page: Page) {
         this.page = page;
-        this.deleteModal = new DeleteModalComponent(page)
+        this.deleteModal = new DeleteModalComponent(page);
         this.section = page.locator("section");
         this.rows = page.locator("tr[data-testid='event-table-row']");
         this.totalCountLabel = this.section.locator("span.text-sm.text-gray-400");
@@ -22,32 +22,22 @@ export class EventTableComponent {
     /**
      * Verifies that the table headers match the expected column names in order
      */
-    async verifyTableHeaders(
-        expectedHeaders: string[] = ["Title", "Category", "City", "Date", "Price", "Seats", "Actions"]
-    ) {
+    async verifyTableHeaders(expectedHeaders: string[] = ["Title", "Category", "City", "Date", "Price", "Seats", "Actions"]) {
         await expect(this.tableHeaders).toHaveText(expectedHeaders);
     }
 
     /**
      * Gets a specific table row locator by searching for the event title text
      */
-    async getRowByTitle(title: string): Promise<Locator> {
+    getRowByTitle(title: string): Locator {
         return this.rows.filter({ hasText: title });
     }
 
     /**
      * Verifies that a specific event row exists and matches expected values
      */
-    async verifyEventInTable(data: {
-        title: string;
-        category?: string;
-        city?: string;
-        date?: string;
-        price?: string;
-        hasActions?: boolean
-    }) {
-
-        const row = await this.getRowByTitle(data.title);
+    async verifyEventInTable(data: { title: string; category?: string; city?: string; date?: string; price?: string; hasActions?: boolean }) {
+        const row = this.getRowByTitle(data.title);
         await expect(row).toBeVisible();
 
         if (data.category) {
@@ -76,13 +66,13 @@ export class EventTableComponent {
      * Performs an action (edit or delete) on a specific event row based on its title
      */
     async performActionOnEvent(title: string, action: "edit" | "delete") {
-        const row = await this.getRowByTitle(title);
+        const row = this.getRowByTitle(title);
         await expect(row).toBeVisible();
 
         // Target the actions column (last <td>) and look for the corresponding button or link
         const actionCell = row.locator("td").last();
-        const locatorId = action === 'edit' ? "edit-event-btn" : "delete-event-btn"
-        const actionButton = actionCell.getByTestId(locatorId)
+        const locatorId = action === "edit" ? "edit-event-btn" : "delete-event-btn";
+        const actionButton = actionCell.getByTestId(locatorId);
 
         await expect(actionButton).toBeVisible();
         await actionButton.click();

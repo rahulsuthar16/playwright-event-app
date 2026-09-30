@@ -1,7 +1,6 @@
-// utils/auth.helper.ts
 import { Page, expect } from "@playwright/test";
 import { LoginPage } from "../pages/login.page";
-import { valid } from "../data/credentials.json"
+import { valid } from "../data/credentials.json";
 
 export async function loginUser(page: Page) {
     const loginPage = new LoginPage(page);

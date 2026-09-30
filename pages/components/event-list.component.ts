@@ -20,37 +20,37 @@ export class EventListComponent {
         expect(count).toBe(expectedCount);
     }
 
-    async getCard(index: number): Promise<EventCardComponent> {
+    getCard(index: number) {
         return new EventCardComponent(this.cardsLocator.nth(index));
     }
 
     async verifyAllCards() {
         const count = await this.getCount();
         for (let i = 0; i < count; i++) {
-            const card = await this.getCard(i);
+            const card = this.getCard(i);
             await card.verifyCard();
         }
     }
 
     // Function to verify that all cards match a search criteria across specific fields
-    async verifyAllCardsMatchSearch(searchTerm: string, searchBy: 'title' | 'type' | 'location') {
+    async verifyAllCardsMatchSearch(searchTerm: string, searchBy: "title" | "type" | "location") {
         const count = await this.getCount();
         expect(count).toBeGreaterThan(0);
 
         const lowerCaseSearch = searchTerm.toLowerCase();
 
         for (let i = 0; i < count; i++) {
-            const card = await this.getCard(i);
+            const card = this.getCard(i);
             let fieldValue = "";
 
             switch (searchBy) {
-                case 'title':
+                case "title":
                     fieldValue = await card.getTitle();
                     break;
-                case 'type':
+                case "type":
                     fieldValue = await card.getEventType();
                     break;
-                case 'location':
+                case "location":
                     fieldValue = await card.getLocation();
                     break;
             }

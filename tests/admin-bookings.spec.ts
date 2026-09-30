@@ -1,18 +1,18 @@
-import { expect, test } from '@playwright/test';
-import { AdminBookingsPage } from '../pages/admin-booking.page';
-import { loginUser } from '../utils/auth.helper';
+import { expect, test } from "@playwright/test";
+import { AdminBookingsPage } from "../pages/admin-booking.page";
+import { loginUser } from "../utils/auth.helper";
 
-test.describe('Manage Bookings scenarios', { tag: ['@adminBookings'] }, () => {
+test.describe("Manage Bookings scenarios", { tag: ["@adminBookings"] }, () => {
     let adminBookingsPage: AdminBookingsPage;
 
     test.beforeEach(async ({ page }) => {
-        await loginUser(page)
+        await loginUser(page);
         adminBookingsPage = new AdminBookingsPage(page);
-        await adminBookingsPage.goto()
-        await adminBookingsPage.header.verifyActiveLink('Admin')
+        await adminBookingsPage.goto();
+        await adminBookingsPage.header.verifyActiveLink("Admin");
     });
 
-    test('MANAGE_BOOKINGS_01 : should display my bookings', async () => {
+    test("MANAGE_BOOKINGS_01 : should display my bookings", async () => {
         await expect(adminBookingsPage.manageBookingsTitle).toBeVisible();
         await expect(adminBookingsPage.manageBookingsSubTitle).toBeVisible();
 
@@ -20,8 +20,6 @@ test.describe('Manage Bookings scenarios', { tag: ['@adminBookings'] }, () => {
     });
 
     test('MANAGE_BOOKINGS_02 : should display "no bookings found" for no events booked ', async () => {
-        await adminBookingsPage.verifyNoBooking()
+        await adminBookingsPage.verifyNoBooking();
     });
-
-
 });

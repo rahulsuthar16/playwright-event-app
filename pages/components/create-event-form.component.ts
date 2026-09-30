@@ -42,8 +42,8 @@ export class CreateEventFormComponent {
         this.totalSeatsInput = page.locator("#total-seats");
         this.imageUrlInput = page.locator("input[type='url']");
         this.submitButton = page.locator("#add-event-btn");
-        this.updateEventButton = page.locator('button:has-text("Update Event")')
-        this.cancelEditButton = page.getByRole('button', { name: 'Cancel edit' })
+        this.updateEventButton = page.locator('button:has-text("Update Event")');
+        this.cancelEditButton = page.getByRole("button", { name: "Cancel edit" });
 
         // Error Message Locators (Targets the <p> tag immediately following each required input when error state triggers)
         this.titleError = page.locator("#event-title-input + p.text-xs.text-red-600");
@@ -54,17 +54,7 @@ export class CreateEventFormComponent {
         this.totalSeatsError = page.locator("#total-seats + p.text-xs.text-red-600");
     }
 
-    async fillEventForm(data: {
-        title: string;
-        description?: string;
-        category: string;
-        city: string;
-        venue: string;
-        dateTime: string;
-        price: string;
-        totalSeats: string;
-        imageUrl?: string;
-    }) {
+    async fillEventForm(data: { title: string; description?: string; category: string; city: string; venue: string; dateTime: string; price: string; totalSeats: string; imageUrl?: string }) {
         await this.titleInput.fill(data.title);
         if (data.description) await this.descriptionInput.fill(data.description);
         await this.categorySelect.selectOption(data.category);
