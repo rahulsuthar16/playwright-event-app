@@ -8,7 +8,7 @@ test.describe('Events scenarios', { tag: ['@eventsPage'] }, () => {
     test.beforeEach(async ({ page }) => {
         await loginUser(page)
         eventsPage = new EventsPage(page);
-        eventsPage.goto()
+        await eventsPage.goto()
         await eventsPage.header.verifyActiveLink('Events')
     });
 

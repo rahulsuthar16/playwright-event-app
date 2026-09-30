@@ -8,7 +8,7 @@ test.describe('My Bookings scenarios', { tag: ['@bookingPage'] }, () => {
     test.beforeEach(async ({ page }) => {
         await loginUser(page)
         myBookingsPage = new MyBookingsPage(page);
-        myBookingsPage.goto()
+        await myBookingsPage.goto()
         await myBookingsPage.header.verifyActiveLink('My Bookings')
     });
 
@@ -27,7 +27,7 @@ test.describe('My Bookings scenarios', { tag: ['@bookingPage'] }, () => {
 
     test('MY_BOOKINGS_03 : should navigate to events page when clicking the browse events button', async ({ page }) => {
         await expect(myBookingsPage.browseEventsButton).toBeVisible()
-        myBookingsPage.browseEventsButton.click()
+        await myBookingsPage.browseEventsButton.click()
 
         await expect(page).toHaveURL("/events")
     });

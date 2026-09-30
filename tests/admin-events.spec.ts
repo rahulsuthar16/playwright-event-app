@@ -11,7 +11,7 @@ test.describe('Manage Bookings scenarios', { tag: ['@adminBookings'] }, () => {
     test.beforeEach(async ({ page }) => {
         await loginUser(page)
         adminEventsPage = new AdminEventsPage(page);
-        adminEventsPage.goto()
+        await adminEventsPage.goto()
         await adminEventsPage.header.verifyActiveLink('Admin')
     });
 
